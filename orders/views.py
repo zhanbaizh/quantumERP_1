@@ -17,6 +17,10 @@ class OrderViewSet(viewsets.ModelViewSet):
 class TechCardViewSet(viewsets.ModelViewSet):
     queryset = TechCard.objects.all()
     serializer_class = TechCardSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['name', 'raw_materials']
+    filterset_fields = ['name', 'raw_materials']
+    ordering_fields = ['name', 'created_at']
 
 # ViewSet для складских объектов
 class InventoryItemViewSet(viewsets.ModelViewSet):
