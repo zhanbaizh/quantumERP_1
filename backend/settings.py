@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 from decouple import config
 
@@ -140,14 +141,28 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'django.log',
         },
     },
     'loggers': {
-        'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'DEBUG',  # Установите 'INFO' для продакшн
+        'django': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
         },
     },
 }
+
+
+SECURE_SSL_REDIRECT = True  # Перенаправлять все HTTP-запросы на HTTPS
+SECURE_BROWSER_XSS_FILTER = True  # Включить фильтр XSS
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Не разрешать sniffing типа контента
+X_FRAME_OPTIONS = 'DENY'  # Запретить вставку сайта в фрейм
+SECURE_HSTS_SECONDS = 3600  # Включение HSTS
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+MEDIA_URL = '/media/'  # URL, по которому можно будет получить доступ к медиафайлам
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Путь на диске для хранения медиафайлов
